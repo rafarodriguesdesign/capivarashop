@@ -50,10 +50,20 @@ os dados do Parabéns na Porta e o total já escritos.
 
 ## Publicar no GitHub Pages
 
-1. No GitHub, abra o repositório e vá em **Settings → Pages**.
-2. Em **Build and deployment**, escolha **Deploy from a branch**, selecione o branch e a pasta
-   `/ (root)` e salve.
-3. Em alguns minutos o site fica disponível no endereço mostrado nessa página.
+1. Abra https://github.com/rafarodriguesdesign/capivarashop/settings/pages
+2. Em **Build and deployment → Source**, escolha **Deploy from a branch**.
+3. Em **Branch**, escolha `claude/levevara-capivara-ecommerce-xlc34z`, pasta `/ (root)`, e
+   clique em **Save**.
+4. Em um ou dois minutos o site fica no ar em
+   **https://rafarodriguesdesign.github.io/capivarashop/**
+
+Esse é o link para compartilhar. No WhatsApp ele aparece com a imagem da capivara
+(`img/compartilhar.png`). Se um dia o site mudar de endereço, troque as duas URLs das tags
+`og:url` e `og:image` no `index.html`.
+
+No celular, dá para instalar o site como app: no Chrome, menu **⋮ → Adicionar à tela
+inicial**; no iPhone, **Compartilhar → Adicionar à Tela de Início**. O ícone é a capivara de
+coroa.
 
 ## Sobre a senha
 
