@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>LeveVara</title>
+  <meta name="description" content="LeveVara: coisas de capivara para pets, bebês, crianças, adolescentes, adultos, vovós e vovôs. Artigos de aniversário e Parabéns na Porta.">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Nunito:wght@400;600;700;800&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Desenhos reutilizados: a capivara e a coroa. -->
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <symbol id="capi" viewBox="0 0 220 160">
+      <rect class="c-sombra" x="40" y="116" width="20" height="32" rx="9"></rect>
+      <rect class="c-sombra" x="128" y="118" width="18" height="30" rx="9"></rect>
+      <path class="c-pelo" d="M22 100 C22 66 58 50 100 50 C130 50 150 58 160 74 L164 118 C150 136 120 142 92 142 C50 142 22 128 22 100 Z"></path>
+      <path class="c-barriga" d="M44 124 C64 138 110 140 140 128 C124 136 104 140 88 140 C66 140 52 134 44 124 Z"></path>
+      <path class="c-traco-suave" d="M58 74 q8 -6 16 0 M88 64 q8 -6 16 0 M70 94 q8 -6 16 0 M112 84 q8 -6 16 0" fill="none" stroke-width="2.5" stroke-linecap="round"></path>
+      <rect class="c-pelo" x="62" y="120" width="20" height="30" rx="9"></rect>
+      <rect class="c-pelo" x="146" y="116" width="19" height="32" rx="9"></rect>
+      <path class="c-pelo" d="M134 76 C132 52 150 36 174 36 C196 36 210 52 211 74 C212 94 200 106 182 106 L158 106 C142 104 135 92 134 76 Z"></path>
+      <path class="c-focinho" d="M190 40 C204 46 211 60 211 76 C211 92 202 104 188 106 C184 86 184 58 190 40 Z"></path>
+      <ellipse class="c-focinho" cx="150" cy="40" rx="9" ry="7" transform="rotate(-25 150 40)"></ellipse>
+      <circle class="c-bochecha" cx="176" cy="82" r="7"></circle>
+      <circle class="c-olho" cx="170" cy="60" r="5"></circle>
+      <circle class="c-brilho" cx="171.8" cy="58.2" r="1.6"></circle>
+      <ellipse class="c-olho" cx="204" cy="66" rx="2.6" ry="2"></ellipse>
+      <path class="c-traco" d="M200 92 q-6 5 -13 2" fill="none" stroke-width="2.5" stroke-linecap="round"></path>
+    </symbol>
+    <symbol id="coroa" viewBox="0 0 60 40">
+      <path class="c-coroa" d="M5 36 L3 10 L17 22 L30 4 L43 22 L57 10 L55 36 Z" stroke-width="2.5" stroke-linejoin="round"></path>
+      <circle class="c-joia" cx="30" cy="27" r="4"></circle>
+      <circle class="c-joia" cx="16" cy="29" r="3"></circle>
+      <circle class="c-joia" cx="44" cy="29" r="3"></circle>
+    </symbol>
+  </svg>
+
+  <!-- Portão de senha -->
+  <div class="portao" id="portao">
+    <form class="portao-cartao" id="form-senha">
+      <svg class="portao-arte" viewBox="0 0 220 160" aria-hidden="true" focusable="false">
+        <use href="#capi"></use>
+        <use href="#coroa" x="153" y="8" width="46" height="31" transform="rotate(-8 176 38)"></use>
+      </svg>
+      <h1 class="logo-grande">LeveVara</h1>
+      <p class="portao-texto">Coisas de capivara para toda a família. Digite a senha para entrar na loja.</p>
+      <div class="campo">
+        <label for="senha">Senha</label>
+        <input id="senha" name="senha" type="password" autocomplete="current-password" required autofocus aria-describedby="senha-erro">
+      </div>
+      <p class="erro" id="senha-erro" hidden>Senha errada. Confira as letras maiúsculas e tente de novo.</p>
+      <button class="botao botao-largo" type="submit">Entrar na loja</button>
+      <noscript><p class="erro">Ative o JavaScript do navegador para entrar na LeveVara.</p></noscript>
+    </form>
+  </div>
+
+  <div id="site" hidden>
+    <header class="topo" id="topo">
+      <div class="container topo-interno">
+        <a class="logo" href="#inicio">
+          <svg viewBox="0 0 220 160" aria-hidden="true" focusable="false"><use href="#capi"></use></svg>
+          <span>LeveVara</span>
+        </a>
+        <nav class="nav" aria-label="Seções da loja">
+          <a href="#loja">Loja</a>
+          <a href="#aniversario">Aniversário</a>
+          <a href="#parabens">Parabéns na Porta</a>
+        </nav>
+        <button type="button" class="botao botao-carrinho" id="botao-carrinho" aria-label="Carrinho, 0 itens">
+          <svg class="icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M5.5 8h13l-1.2 12H6.7L5.5 8Z M9 8V7a3 3 0 0 1 6 0v1" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path>
+          </svg>
+          <span class="rotulo-carrinho">Carrinho</span>
+          <span class="contador" id="contador">0</span>
+        </button>
+      </div>
+    </header>
+
+    <main id="inicio">
+      <section class="container hero" aria-labelledby="titulo-hero">
+        <div class="hero-texto">
+          <h1 id="titulo-hero" tabindex="-1">Leve uma capivara pra casa.</h1>
+          <p class="hero-lead">Presentes de capivara para pets, bebês, crianças, adolescentes, adultos, vovós, vovôs e muito mais. Tem tudo para o aniversário, e tem até equipe que vai na sua porta cantar parabéns e colocar a coroa de capivara no aniversariante.</p>
+          <div class="hero-acoes">
+            <a class="botao" href="#loja">Ver a loja</a>
+            <a class="botao botao-contorno" href="#parabens">Agendar Parabéns na Porta</a>
+          </div>
+          <ul class="hero-fatos">
+            <li>Frete grátis acima de <span data-texto="frete-gratis">R$&nbsp;199,00</span></li>
+            <li>Parabéns na Porta a partir de <span data-texto="parabens-desde">R$&nbsp;199,00</span></li>
+            <li>Coroa para criança, adulto e pet</li>
+          </ul>
+        </div>
+        <svg class="hero-arte" viewBox="0 0 320 250" role="img" aria-label="Capivara usando uma coroa de aniversário">
+          <ellipse class="h-lagoa" cx="165" cy="234" rx="136" ry="14"></ellipse>
+          <circle class="h-c1" cx="36" cy="54" r="7"></circle>
+          <rect class="h-c2" x="84" y="18" width="12" height="12" rx="2" transform="rotate(24 90 24)"></rect>
+          <circle class="h-c3" cx="292" cy="36" r="5"></circle>
+          <rect class="h-c4" x="22" y="128" width="10" height="10" rx="2" transform="rotate(-18 27 133)"></rect>
+          <circle class="h-c2" cx="160" cy="26" r="4"></circle>
+          <rect class="h-c1" x="298" y="118" width="10" height="10" rx="2" transform="rotate(30 303 123)"></rect>
+          <use href="#capi" x="30" y="52" width="260" height="189"></use>
+          <g class="hero-coroa"><use href="#coroa" x="207" y="57" width="58" height="39"></use></g>
+        </svg>
+      </section>
+
+      <section class="secao" id="loja" aria-labelledby="titulo-loja">
+        <div class="container">
+          <div class="secao-cabeca">
+            <h2 id="titulo-loja">Tem capivara para todo mundo</h2>
+            <p class="secao-lead">Escolha para quem é o presente. Do mordedor do cachorro à pantufa da vovó.</p>
+          </div>
+          <div class="filtros" id="filtros" role="group" aria-label="Filtrar produtos por público"></div>
+          <p class="resultado" id="resultado" role="status"></p>
+          <div class="grade" id="grade-loja"></div>
+        </div>
+      </section>
+
+      <section class="secao secao-festa" id="aniversario" aria-labelledby="titulo-festa">
+        <div class="bandeirinhas" aria-hidden="true"></div>
+        <div class="container">
+          <div class="secao-cabeca">
+            <h2 id="titulo-festa">Aniversário de capivara</h2>
+            <p class="secao-lead">Coroa, bolo, balão, vela e lembrancinha. Tudo que a festa precisa, com capivara em cada canto.</p>
+          </div>
+          <div class="grade" id="grade-festa"></div>
+        </div>
+      </section>
+
+      <section class="secao secao-parabens" id="parabens" aria-labelledby="titulo-parabens">
+        <div class="container">
+          <div class="secao-cabeca">
+            <h2 id="titulo-parabens">Parabéns na Porta</h2>
+            <p class="secao-lead">Contrate a equipe LeveVara: a gente toca a campainha, canta parabéns e coloca uma coroa de capivara na cabeça do aniversariante. Vale para qualquer idade, do bebê ao bisavô, e até para o seu cachorro.</p>
+          </div>
+
+          <ol class="passos">
+            <li>
+              <h3>Você agenda</h3>
+              <p>Escolha o pacote, o dia, o horário e o endereço.</p>
+            </li>
+            <li>
+              <h3>A equipe chega</h3>
+              <p>Os capivareiros tocam a campainha na hora marcada. Pode ser surpresa.</p>
+            </li>
+            <li>
+              <h3>Parabéns e coroa</h3>
+              <p>Todo mundo canta parabéns e o aniversariante ganha a coroa de capivara, que fica de presente.</p>
+            </li>
+          </ol>
+
+          <div class="pacotes" id="lista-pacotes"></div>
+
+          <form class="agendar" id="form-agendar" aria-labelledby="titulo-agendar">
+            <div class="agendar-cabeca">
+              <h3 id="titulo-agendar">Agende o Parabéns na Porta</h3>
+              <p>Preencha os dados da festa. O agendamento vai para o carrinho junto com os seus produtos.</p>
+            </div>
+            <div class="campos">
+              <div class="campo campo-largo">
+                <label for="f-pacote">Pacote</label>
+                <select id="f-pacote" name="pacote" required></select>
+              </div>
+              <div class="campo">
+                <label for="f-aniversariante">Nome do aniversariante</label>
+                <input id="f-aniversariante" name="aniversariante" type="text" required pattern=".*\S.*" autocomplete="off" placeholder="Ex.: Vó Cida">
+              </div>
+              <div class="campo">
+                <label for="f-idade">Quantos anos vai fazer</label>
+                <input id="f-idade" name="idade" type="number" inputmode="numeric" min="1" max="120" required placeholder="Ex.: 80">
+              </div>
+              <div class="campo">
+                <label for="f-data">Dia</label>
+                <input id="f-data" name="data" type="date" required>
+              </div>
+              <div class="campo">
+                <label for="f-hora">Horário</label>
+                <input id="f-hora" name="hora" type="time" min="08:00" max="20:00" required aria-describedby="ajuda-hora">
+                <p class="ajuda" id="ajuda-hora">Das 8h às 20h.</p>
+              </div>
+              <div class="campo campo-largo">
+                <label for="f-endereco">Endereço</label>
+                <input id="f-endereco" name="endereco" type="text" required pattern=".*\S.*" autocomplete="street-address" placeholder="Rua, número, complemento, bairro e cidade">
+              </div>
+              <div class="campo">
+                <label for="f-cep">CEP</label>
+                <input id="f-cep" name="cep" type="text" inputmode="numeric" required pattern="[0-9]{5}-?[0-9]{3}" autocomplete="postal-code" placeholder="00000-000" title="Use o formato 00000-000">
+              </div>
+              <div class="campo">
+                <label for="f-coroa">Tamanho da coroa</label>
+                <select id="f-coroa" name="coroa" required>
+                  <option>Criança</option>
+                  <option>Adulto</option>
+                  <option>Pet</option>
+                </select>
+              </div>
+              <div class="campo">
+                <label for="f-contratante">Seu nome</label>
+                <input id="f-contratante" name="contratante" type="text" required pattern=".*\S.*" autocomplete="name">
+              </div>
+              <div class="campo">
+                <label for="f-telefone">Seu WhatsApp ou telefone</label>
+                <input id="f-telefone" name="telefone" type="tel" required minlength="10" autocomplete="tel" placeholder="(11) 91234-5678">
+              </div>
+              <div class="campo campo-largo">
+                <label class="checagem" for="f-surpresa">
+                  <input id="f-surpresa" name="surpresa" type="checkbox" value="sim">
+                  É surpresa: não vamos ligar para o aniversariante
+                </label>
+              </div>
+              <div class="campo campo-largo">
+                <label for="f-recado">Recado para a equipe <span class="opcional">(opcional)</span></label>
+                <textarea id="f-recado" name="recado" rows="3" placeholder="Ex.: ela adora capivara e bolo de doce de leite"></textarea>
+              </div>
+            </div>
+            <div class="agendar-pe">
+              <button class="botao" type="submit">Adicionar ao carrinho</button>
+              <p class="aviso" id="agendar-status" role="status"></p>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="rodape">
+      <div class="container rodape-interno">
+        <a class="logo logo-pequeno" href="#inicio">LeveVara</a>
+        <p>Coisas de capivara para toda a família. © <span id="ano">2026</span> LeveVara.</p>
+        <button type="button" class="link-botao" id="sair">Sair da loja</button>
+      </div>
+    </footer>
+
+    <div class="fundo-carrinho" id="fundo-carrinho" hidden></div>
+    <div class="carrinho" id="carrinho" role="dialog" aria-modal="true" aria-labelledby="titulo-carrinho" hidden>
+      <div class="carrinho-cabeca">
+        <h2 id="titulo-carrinho">Carrinho</h2>
+        <button type="button" class="fechar" id="fechar-carrinho" data-fechar-carrinho aria-label="Fechar carrinho">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"></path></svg>
+        </button>
+      </div>
+
+      <div class="carrinho-vazio" id="carrinho-vazio">
+        <svg viewBox="0 0 220 160" aria-hidden="true" focusable="false"><use href="#capi"></use></svg>
+        <p>Seu carrinho está vazio. A capivara está esperando.</p>
+        <a class="botao" href="#loja" data-fechar-carrinho>Ver a loja</a>
+      </div>
+
+      <ul class="carrinho-lista" id="carrinho-lista"></ul>
+
+      <div class="carrinho-pe" id="carrinho-pe">
+        <div class="linha" id="linha-produtos"><span>Produtos</span><span id="t-produtos"></span></div>
+        <div class="linha" id="linha-servicos"><span>Parabéns na Porta</span><span id="t-servicos"></span></div>
+        <div class="linha" id="linha-frete"><span>Frete</span><span id="t-frete"></span></div>
+        <p class="nota-frete" id="nota-frete"></p>
+        <div class="linha linha-total"><span>Total</span><span id="t-total"></span></div>
+        <a class="botao botao-largo" id="finalizar-whats" href="#" target="_blank" rel="noopener">Finalizar pelo WhatsApp</a>
+        <button class="botao botao-largo" id="finalizar" type="button">Finalizar pedido</button>
+        <p class="nota-demo" id="nota-demo">Modo demonstração: nenhum pagamento é cobrado.</p>
+      </div>
+
+      <div class="carrinho-confirmado" id="carrinho-confirmado" hidden>
+        <svg viewBox="0 0 220 160" aria-hidden="true" focusable="false">
+          <use href="#capi"></use>
+          <use href="#coroa" x="153" y="8" width="46" height="31" transform="rotate(-8 176 38)"></use>
+        </svg>
+        <h3>Pedido recebido!</h3>
+        <p>Número do pedido: <strong id="numero-pedido"></strong></p>
+        <p id="confirmado-resumo"></p>
+        <p class="nota-demo">Modo demonstração: nenhum pagamento foi cobrado.</p>
+        <button type="button" class="botao" data-fechar-carrinho>Continuar comprando</button>
+      </div>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/dados.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
