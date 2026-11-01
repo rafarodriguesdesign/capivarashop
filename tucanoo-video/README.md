@@ -1,18 +1,26 @@
 # Tucanoo acenando
 
 Vídeo do ícone do Tucanoo feito com o vídeo do flamingo como referência. Começa e termina
-na pose exata do logo, com a asa dobrada. No meio, a fresta branca da asa fecha, a asa sai
-pela borda da moldura e acena; o tucano pisca, abre o bico e balança a cabeça no ritmo do
+na pose do logo, com a asa dobrada. No meio, a fresta branca da asa fecha, a asa sai pela
+borda da moldura e acena; o tucano pisca, abre o bico e balança a cabeça no ritmo do
 aceno. O ritmo foi medido no vídeo do flamingo (um aceno a cada ~0,45 s e uma piscada a
 cada ~1,3 s).
 
-- A asa levantada não tem contorno: tem a mesma cor do corpo e se funde a ele.
-- Quando o bico abre, a mandíbula de baixo gira inteira em volta do canto da boca e mostra
-  uma ponta azul que espelha a de cima. Com o bico fechado, tudo fica idêntico ao logo.
+- **Pôr do sol no fundo:** o vídeo começa num fim de tarde (céu creme) e o pôr do sol vai
+  começando: o céu fica pêssego e rosado, o sol desce por trás do ícone até encostar no
+  horizonte e o mar ganha reflexos dourados.
+- **Asa sem contorno:** a asa levantada tem a mesma cor do corpo e se funde a ele.
+- **Ponta do bico redesenhada:** a borda de baixo do bico desce em curva contínua até a
+  ponta do gancho (no desenho original havia um canto vivo). Quando o bico abre, a
+  mandíbula de baixo gira inteira em volta do canto da boca e termina numa ponta azul,
+  levemente virada para cima, que espelha o gancho de cima.
+
+Como o céu muda do começo ao fim, o primeiro e o último quadro não são iguais: tocado em
+loop, o fundo volta para o fim de tarde.
 
 | Arquivo | O que é |
 | --- | --- |
-| `tucanoo_acenando.mp4` | O vídeo: 1080×1080, 30 fps, 10 s, H.264. Começa e termina no logo, então repete sem emenda |
+| `tucanoo_acenando.mp4` | O vídeo: 1080×1080, 30 fps, 10 s, H.264 |
 | `animacao/tucanoo_anim.html` | A animação. Aberta no navegador, roda ao vivo |
 | `animacao/render.js` | Gera os quadros PNG da animação com o Chromium |
 
@@ -27,7 +35,13 @@ No começo do `<script>` de `animacao/tucanoo_anim.html`:
 - `BLINKS`: momentos das piscadas
 - `BEAK` e `OPEN_DEG`: quando o bico abre e quanto
 
-A cor do fundo é o `fill` do retângulo `outer`.
+No bloco do pôr do sol:
+
+- `PAL`: cores do céu, do sol, do mar e das nuvens no começo e no fim do vídeo
+- `SUN`: caminho do sol (de onde parte e onde termina)
+
+Para ver a animação com fundo liso, sem o pôr do sol, abra a página com `?fundo=FFE3B4`
+(qualquer cor em hexadecimal).
 
 ## Gerar o vídeo de novo
 

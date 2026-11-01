@@ -13,8 +13,10 @@
 <body>
 <!--
   Tucanoo acenando: animação do ícone, inspirada no vídeo do flamingo.
-  Começa e termina na pose exata do logo (asa dobrada). No meio, a fresta branca da asa
-  fecha, a asa sai pela borda da moldura e acena; o tucano pisca, abre o bico e balança.
+  Começa e termina na pose do logo (asa dobrada). No meio, a fresta branca da asa fecha,
+  a asa sai pela borda da moldura e acena; o tucano pisca, abre o bico e balança.
+  No fundo, o pôr do sol começa: o céu esquenta, o sol desce por trás do ícone até
+  encostar no horizonte e o mar ganha reflexos.
 
   - Aberta no navegador, a animação roda ao vivo.
   - O render.js usa window.renderFrame(t) para desenhar cada quadro (t em segundos).
@@ -38,6 +40,34 @@
       <stop stop-color="#01071A"/><stop offset="1" stop-color="#042966"/>
     </linearGradient>
 
+    <!-- pôr do sol: as cores mudam a cada quadro (JS) -->
+    <linearGradient id="gSky" x1="0" y1="-80" x2="0" y2="262" gradientUnits="userSpaceOnUse">
+      <stop id="sky0" offset="0"/><stop id="sky1" offset="0.55"/><stop id="sky2" offset="1"/>
+    </linearGradient>
+    <radialGradient id="gGlow" cx="150" cy="150" r="290" gradientUnits="userSpaceOnUse">
+      <stop id="glow0" offset="0" stop-opacity="1"/>
+      <stop id="glow1" offset="0.3" stop-opacity="0.78"/>
+      <stop id="glow2" offset="0.62" stop-opacity="0.24"/>
+      <stop id="glow3" offset="1" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="gSun" cx="150" cy="150" r="46" gradientUnits="userSpaceOnUse">
+      <stop id="sun0" offset="0"/><stop id="sun1" offset="1"/>
+    </radialGradient>
+    <linearGradient id="gSea" x1="0" y1="262" x2="0" y2="320" gradientUnits="userSpaceOnUse">
+      <stop id="sea0" offset="0"/><stop id="sea1" offset="1"/>
+    </linearGradient>
+    <radialGradient id="gSeaGlow" cx="150" cy="262" r="120" gradientTransform="translate(0 262) scale(1 0.24) translate(0 -262)" gradientUnits="userSpaceOnUse">
+      <stop id="seaGlow0" offset="0" stop-opacity="0.85"/><stop id="seaGlow1" offset="1" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="gCloud" x1="0" y1="0" x2="0" y2="1">
+      <stop id="cloud0" offset="0"/><stop id="cloud1" offset="1"/>
+    </linearGradient>
+    <!-- granulação finíssima e fixa só no céu/mar: evita faixas no degradê depois da compressão -->
+    <filter id="fGrain" x="-110" y="-80" width="400" height="400" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="1.3" numOctaves="1" seed="7" result="noise"/>
+      <feColorMatrix in="noise" type="matrix" values="1 0 0 0 0  1 0 0 0 0  1 0 0 0 0  0 0 0 0 1" result="gray"/>
+      <feComposite in="SourceGraphic" in2="gray" operator="arithmetic" k1="0" k2="1" k3="0.05" k4="-0.025"/>
+    </filter>
     <clipPath id="cIcon"><rect width="240" height="240" rx="32"/></clipPath>
     <!-- tudo, menos o ícone: a sombra da asa só cai no fundo de fora da moldura -->
     <clipPath id="cOutside">
@@ -49,23 +79,36 @@
     </clipPath>
     <!-- com o bico aberto, o amarelo de cima termina na linha da boca -->
     <clipPath id="cAboveMouth">
-      <path d="M60 113.814L95.3198 113.814C95.3333 113.666 130.085 110.901 157.773 130.767C160.911 131.495 166.311 134.815 168.29 136.077C175 140.4 184.6 145.2 189.9 148.8L215 160L215 60L60 60Z"/>
+      <path d="M60 113.814L95.3198 113.814C95.3333 113.666 130.085 110.901 157.773 130.767C160.911 131.495 166.311 134.815 168.29 136.077C176.4 140.6 186.2 145.4 190.4 146.6L215 156L215 60L60 60Z"/>
     </clipPath>
-    <!-- ponta azul da mandíbula de baixo: espelha a ponta de cima e fica escondida com o bico fechado -->
+    <!-- ponta azul da mandíbula de baixo (escondida com o bico fechado) -->
     <clipPath id="cJawTip">
       <path id="jawTipClip"/>
     </clipPath>
 
     <filter id="fIconShadow" x="-30%" y="-30%" width="160%" height="160%">
-      <feDropShadow dx="0" dy="6" stdDeviation="9" flood-color="#B84A00" flood-opacity="0.22"/>
+      <feDropShadow id="iconShadow" dx="0" dy="6" stdDeviation="9" flood-color="#B84A00" flood-opacity="0.22"/>
     </filter>
     <filter id="fBlur" x="-30%" y="-30%" width="160%" height="160%">
       <feGaussianBlur stdDeviation="3.2"/>
     </filter>
   </defs>
 
-  <!-- fundo -->
-  <rect id="outer" x="-110" y="-80" width="400" height="400" fill="#FFE3B4"/>
+  <!-- fundo: pôr do sol começando (céu, brilho do sol, nuvens, sol e mar com reflexos) -->
+  <g id="sunset" filter="url(#fGrain)">
+    <rect x="-110" y="-80" width="400" height="342" fill="url(#gSky)"/>
+    <rect x="-110" y="-80" width="400" height="342" fill="url(#gGlow)"/>
+    <g id="clouds" fill="url(#gCloud)">
+      <path id="cloudA" d="M150 -46h118a5 5 0 0 1 0 10h-118a5 5 0 0 1 0-10Z M176 -46a9 9 0 0 1 17 -2a7 7 0 0 1 12 2Z"/>
+      <path id="cloudB" d="M-98 -22h86a4 4 0 0 1 0 8h-86a4 4 0 0 1 0-8Z M-74 -22a7 7 0 0 1 13 -2a5 5 0 0 1 9 2Z"/>
+      <path id="cloudC" d="M218 92h80a4 4 0 0 1 0 8h-80a4 4 0 0 1 0-8Z M250 92a6 6 0 0 1 11 -2a5 5 0 0 1 8 2Z"/>
+    </g>
+    <circle id="sunDisc" cx="150" cy="150" r="46" fill="url(#gSun)"/>
+    <rect id="sea" x="-110" y="262" width="400" height="58" fill="url(#gSea)"/>
+    <rect x="-110" y="262" width="400" height="58" fill="url(#gSeaGlow)"/>
+    <g id="reflections"></g>
+  </g>
+  <rect id="outer" x="-110" y="-80" width="400" height="400" fill="#FFE3B4" display="none"/>
 
   <!-- ícone -->
   <rect width="240" height="240" rx="32" fill="url(#gBg)" filter="url(#fIconShadow)"/>
@@ -88,7 +131,7 @@
       <!-- bico -->
       <g id="beak">
         <g id="upperClip">
-        <path id="beakUpper" fill="#FFAE00" d="M179.132 99.8812C172.155 93.3712 144.863 73.8894 114.949 73.8889C114.949 73.8889 109.372 79.238 106.458 83.3099C99.2316 93.4048 95.8493 101.633 95.3198 113.872C94.7347 127.402 97.4086 139.561 104.816 150.534C128.637 147.9 153.08 142.994 176.874 149.314C178.798 149.825 181.052 150.82 182.952 151.152C185.26 152.79 187.745 154.387 190.102 155.955C190.611 154.012 191.449 151.791 192.098 149.857C197.051 135.12 194.008 115.537 183.245 104.649C182.461 103.059 180.409 101.08 179.132 99.8812Z"/>
+        <path id="beakUpper" fill="#FFAE00" d="M179.132 99.8812C172.155 93.3712 144.863 73.8894 114.949 73.8889C114.949 73.8889 109.372 79.238 106.458 83.3099C99.2316 93.4048 95.8493 101.633 95.3198 113.872C94.7347 127.402 97.4086 139.561 104.816 150.534C128.637 147.9 153.08 142.994 176.874 149.314C180.8 150.3 184.4 150.9 187.2 150.5C189.4 150.2 191.1 150.3 192.098 149.857C197.051 135.12 194.008 115.537 183.245 104.649C182.461 103.059 180.409 101.08 179.132 99.8812Z"/>
         <!-- o logo original desenha o bico duas vezes (borda mais nítida) -->
         <path id="beakUpper2" fill="#FFAE00"/>
         </g>
@@ -98,10 +141,11 @@
           <!-- mandíbula de baixo: gira inteira em volta do canto da boca -->
           <g id="jaw">
             <path id="jawShape" fill="url(#gJaw)"/>
-            <g clip-path="url(#cJawTip)"><path id="jawTip" fill="url(#gTip)" display="none"/></g>
+            <g clip-path="url(#cJawTip)"><path id="jawTip" fill="url(#gTip)"/></g>
           </g>
         </g>
-        <path fill="url(#gTip)" d="M183.252 104.651C194.014 115.538 197.058 135.122 192.105 149.859C191.456 151.793 187.725 159.256 187.216 161.2C186.549 159.92 185.692 156.107 182.959 151.154C178.567 141.239 166.847 134.365 157.777 130.77C160.115 118.167 169.679 106.501 183.252 104.651C181.396 104.907 185.018 104.41 183.252 104.651Z"/>
+        <!-- ponta azul de cima: a borda de baixo do bico entra no gancho em curva contínua -->
+        <path fill="url(#gTip)" d="M183.252 104.651C194.014 115.538 197.058 135.122 192.105 149.859C190.9 153.4 189.2 158.6 186.6 161.9C185.16 157.34 182.19 150.67 176.874 149.255C174.6 140.6 166.2 134 157.777 130.77C160.115 118.167 169.679 106.501 183.252 104.651Z"/>
       </g>
     </g>
   </g>
@@ -128,7 +172,7 @@
   const WAVE_PERIOD = 0.4545;               // um aceno a cada ~0,45 s (ritmo do flamingo)
   const BLINKS = [1.45, 2.75, 4.05, 5.35, 6.65, 7.95];      // início de cada piscada (s)
   const BEAK = [[1.55, 2.30], [4.35, 5.05], [6.95, 7.65]];  // bico abrindo ("oi!"): início e fim (s)
-  const OPEN_DEG = 9;                       // abertura máxima do bico (graus)
+  const OPEN_DEG = 12.5;                    // abertura máxima do bico (graus)
 
   const W = 2 * Math.PI / WAVE_PERIOD;
   const CLOSE_DUR = 0.08;                   // fresta branca fechando / abrindo
@@ -214,25 +258,19 @@
   }
 
   // ---- bico ----
-  // mandíbula de baixo exatamente como no logo (usada com o bico fechado)
-  const JAW_LOGO = "M168.29 136.077C166.311 134.815 160.911 131.495 157.773 130.767C130.085 110.901 95.3333 113.666 95.3198 113.814C94.7347 127.343 97.4086 139.561 104.816 150.534C108.775 150.097 112.584 149.593 116.579 149.089L116.579 149.089C136.624 146.56 157.034 143.986 176.874 149.255C177.656 149.463 178.492 149.75 179.337 150.041L179.339 150.041C180.572 150.466 181.824 150.896 182.952 151.093C184.66 152.306 186.466 153.497 188.245 154.669C188.869 155.081 189.49 155.49 190.102 155.897C190.47 154.491 191.011 152.938 191.528 151.455C191.725 150.889 191.919 150.333 192.098 149.798C196.106 137.872 174.2 139.934 168.29 136.077Z";
-  // mesma mandíbula com a ponta (que fica escondida sob o gancho) redesenhada:
-  // borda de baixo contínua e ponta arredondada, para o bico aberto ficar harmônico
-  const JAW_OPEN = "M168.29 136.077C166.311 134.815 160.911 131.495 157.773 130.767C130.085 110.901 95.3333 113.666 95.3198 113.814C94.7347 127.343 97.4086 139.561 104.816 150.534C108.775 150.097 112.584 149.593 116.579 149.089L116.579 149.089C136.624 146.56 157.034 143.986 176.874 149.255C177.656 149.463 178.492 149.75 179.337 150.041L179.339 150.041C180.572 150.466 181.824 150.896 182.952 151.093C185.1 151.5 187.6 152.6 189.4 152.2C191 151.8 191.3 149.6 189.9 148.8C184.6 145.2 175 140.4 168.29 136.077Z";
-  // Divisa entre o laranja e a ponta azul da mandíbula de baixo (de cima para baixo).
-  // Fechado: fica toda sob o gancho azul de cima (invisível, logo idêntico).
-  // Aberto: cruza a mandíbula curvada como a divisa da ponta de cima, espelhada.
-  const TIP_HIDDEN = [[181.9, 144.0], [182.6, 146.6], [183.6, 149.0], [184.4, 151.6]];
-  const TIP_OPEN = [[167.2, 135.4], [167.6, 140.4], [170.6, 145.6], [176.4, 149.7]];
-  function jawTipClip(k) {
-    const p = TIP_HIDDEN.map((q, i) => [q[0] + (TIP_OPEN[i][0] - q[0]) * k, q[1] + (TIP_OPEN[i][1] - q[1]) * k]);
-    return `M${p[0][0].toFixed(3)} 110L${f3(p[0])}C${f3(p[1])} ${f3(p[2])} ${f3(p[3])}L${(p[3][0] + 2).toFixed(3)} 180L215 180L215 110Z`;
-  }
+  // Ponta do bico redesenhada para ficar harmônica: a borda de baixo do bico desce
+  // em curva contínua até a ponta do gancho (sem o canto vivo do desenho original).
+  // Mandíbula de baixo: a parte escondida sob o gancho termina numa ponta arredondada
+  // que aparece quando o bico abre.
+  const JAW = "M168.29 136.077C166.311 134.815 160.911 131.495 157.773 130.767C130.085 110.901 95.3333 113.666 95.3198 113.814C94.7347 127.343 97.4086 139.561 104.816 150.534C108.775 150.097 112.584 149.593 116.579 149.089L116.579 149.089C136.624 146.56 157.034 143.986 176.874 149.255C181.2 150.4 186.2 150.2 190.4 146.6C186.2 145.4 176.4 140.6 168.29 136.077Z";
+  // Ponta azul da mandíbula de baixo: a divisa cruza a mandíbula quase na perpendicular,
+  // curvada como a divisa da ponta de cima. Fica escondida sob o gancho com o bico fechado.
+  const JAW_TIP_CLIP = "M180.8 110L180 142.1C178.6 144.2 178 147.4 178.2 150.5L176 178L215 178L215 110Z";
   const HINGE = [95.3198, 113.814];         // canto da boca
   const MOUTH_LINE = [                      // borda de cima da mandíbula de baixo, do canto até a ponta
     [[95.3333, 113.666], [130.085, 110.901], [157.773, 130.767]],
     [[160.911, 131.495], [166.311, 134.815], [168.29, 136.077]],
-    [[175, 140.4], [184.6, 145.2], [189.9, 148.8]],
+    [[176.4, 140.6], [186.2, 145.4], [190.4, 146.6]],
   ];
   function mouthPath(a) {
     const R = p => rot(p, rad(a), HINGE);
@@ -293,28 +331,89 @@
     return m;
   }
 
+  // ---- pôr do sol (fundo) ----
+  // s vai de 0 (fim de tarde: céu creme, sol alto atrás do ícone) a 1 (pôr do sol começando:
+  // céu pêssego/rosado, sol encostando no horizonte, reflexos no mar).
+  const SUN = { x0: 148, x1: 156, y0: 150, y1: 238, r: 46 };
+  const PAL = {                              // [início, fim]
+    sky: [['#FFEACB', '#FFDDB0', '#FFCD9A'], ['#F4C3C2', '#FFB688', '#FF9266']],
+    glow: ['#FFFAEA', '#FFE2A0'],
+    sun: [['#FFFEF6', '#FFF0C4'], ['#FFF6D2', '#FFCB6B']],
+    sea: [['#F7C29C', '#EFAE90'], ['#E07A7E', '#8A4473']],
+    seaGlow: ['#FFF3D6', '#FFD27F'],
+    cloud: [['#FFF7EC', '#FFE6D2'], ['#FFE0D0', '#FFB3A0']],
+    refl: ['#FFF0C8', '#FFE08A'],
+  };
+  const hex = c => [1, 3, 5].map(i => parseInt(c.slice(i, i + 2), 16));
+  const mixC = (a, b, k) => '#' + hex(a).map((v, i) => Math.round(v + (hex(b)[i] - v) * k).toString(16).padStart(2, '0')).join('');
+  const REFL = [                             // faixas de reflexo no mar: y, altura, largura
+    [266, 2.6, 72], [272.5, 2.3, 56], [279.5, 2.0, 42], [287.5, 1.7, 30], [297, 1.4, 19],
+  ];
+  const reflEls = REFL.map(() => {
+    const r = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    $('reflections').appendChild(r);
+    return r;
+  });
+  function setSunset(t) {
+    const k = 0.5 - 0.5 * Math.cos(Math.PI * clamp01(t / T));   // progresso suave
+    const sx = SUN.x0 + (SUN.x1 - SUN.x0) * k, sy = SUN.y0 + (SUN.y1 - SUN.y0) * k;
+    ['sky0', 'sky1', 'sky2'].forEach((id, i) => $(id).setAttribute('stop-color', mixC(PAL.sky[0][i], PAL.sky[1][i], k)));
+    ['glow0', 'glow1', 'glow2', 'glow3'].forEach(id => $(id).setAttribute('stop-color', mixC(PAL.glow[0], PAL.glow[1], k)));
+    const g = $('gGlow'); g.setAttribute('cx', sx.toFixed(2)); g.setAttribute('cy', (sy - 10).toFixed(2));
+    const sg = $('gSun'); sg.setAttribute('cx', sx.toFixed(2)); sg.setAttribute('cy', (sy + 6).toFixed(2));
+    $('sun0').setAttribute('stop-color', mixC(PAL.sun[0][0], PAL.sun[1][0], k));
+    $('sun1').setAttribute('stop-color', mixC(PAL.sun[0][1], PAL.sun[1][1], k));
+    const disc = $('sunDisc'); disc.setAttribute('cx', sx.toFixed(2)); disc.setAttribute('cy', sy.toFixed(2));
+    $('iconShadow').setAttribute('flood-opacity', (0.22 * (1 - 0.75 * k)).toFixed(3));   // o sol está atrás: a sombra some
+    $('sea0').setAttribute('stop-color', mixC(PAL.sea[0][0], PAL.sea[1][0], k));
+    $('sea1').setAttribute('stop-color', mixC(PAL.sea[0][1], PAL.sea[1][1], k));
+    $('gSeaGlow').setAttribute('cx', sx.toFixed(2));
+    $('seaGlow0').setAttribute('stop-color', mixC(PAL.seaGlow[0], PAL.seaGlow[1], k));
+    $('seaGlow0').setAttribute('stop-opacity', (0.45 + 0.45 * k).toFixed(3));
+    $('seaGlow1').setAttribute('stop-color', mixC(PAL.seaGlow[0], PAL.seaGlow[1], k));
+    $('cloud0').setAttribute('stop-color', mixC(PAL.cloud[0][0], PAL.cloud[1][0], k));
+    $('cloud1').setAttribute('stop-color', mixC(PAL.cloud[0][1], PAL.cloud[1][1], k));
+    const cl = $('clouds');
+    cl.setAttribute('opacity', (0.6 + 0.3 * k).toFixed(3));
+    cl.setAttribute('transform', `translate(${(7 * t / T).toFixed(3)} 0)`);
+    const rc = mixC(PAL.refl[0], PAL.refl[1], k);
+    REFL.forEach(([y, h, w], i) => {
+      const ww = w * (0.55 + 0.45 * k) * (1 + 0.12 * Math.sin(2 * Math.PI * 1.3 * t + i * 1.1));
+      const dx = 2.5 * Math.sin(2 * Math.PI * 0.9 * t + i * 1.7);
+      const r = reflEls[i];
+      r.setAttribute('x', (sx + dx - ww / 2).toFixed(2)); r.setAttribute('y', (y - h / 2).toFixed(2));
+      r.setAttribute('width', ww.toFixed(2)); r.setAttribute('height', h);
+      r.setAttribute('rx', h / 2); r.setAttribute('fill', rc);
+      r.setAttribute('opacity', ((0.3 + 0.55 * k) * (1 - i * 0.12)).toFixed(3));
+    });
+  }
+
   // ---- montagem ----
   $('beakUpper2').setAttribute('d', $('beakUpper').getAttribute('d'));
-  $('jawShape').setAttribute('d', JAW_LOGO);
-  $('jawTip').setAttribute('d', JAW_OPEN);
+  $('jawShape').setAttribute('d', JAW);
+  $('jawTip').setAttribute('d', JAW);
+  $('jawTipClip').setAttribute('d', JAW_TIP_CLIP);
   const el = {
     char: $('char'), charWing: $('charWing'), shadowBob: $('shadowBob'), body: $('body'),
     eye: $('eye'), shine: $('eyeShine'), jaw: $('jaw'), jawClip: $('jawClip'), mouth: $('mouth'),
-    jawTipClip: $('jawTipClip'),
-    jawShape: $('jawShape'), jawTip: $('jawTip'), upperClip: $('upperClip'),
+    upperClip: $('upperClip'),
     wing: $('wingFill'), shadow: $('wingShadow'),
   };
 
   const q = new URLSearchParams(location.search);
-  if (q.get('fundo')) {                     // ?fundo=FFE3B4 -> testar outra cor de fundo
+  const SUNSET = !q.get('fundo');           // ?fundo=FFE3B4 -> fundo liso dessa cor, sem o pôr do sol
+  if (!SUNSET) {
+    $('sunset').setAttribute('display', 'none');
+    $('outer').setAttribute('display', 'inline');
     $('outer').setAttribute('fill', '#' + q.get('fundo'));
     document.body.style.background = '#' + q.get('fundo');
   }
 
   window.LOOP = T;
-  // desenha o instante t; devolve true quando o quadro é exatamente a pose do logo
+  // desenha o instante t; devolve true quando o quadro é idêntico ao de repouso (logo parado)
   window.renderFrame = (t) => {
     t = ((t % T) + T) % T;
+    if (SUNSET) setSunset(t);
     const { c, e, L } = pose(t);
     const ph = W * (t - T_LIFT) + PHI;
 
@@ -357,17 +456,15 @@
     if (open) {
       el.jaw.setAttribute('transform', `rotate(${a.toFixed(4)} ${HINGE[0]} ${HINGE[1]})`);
       el.mouth.setAttribute('d', mouthPath(a));
-      el.jawTipClip.setAttribute('d', jawTipClip(o));
     } else {
       el.jaw.removeAttribute('transform');
     }
-    el.jawShape.setAttribute('d', open ? JAW_OPEN : JAW_LOGO);
-    el.jawTip.setAttribute('display', open ? 'inline' : 'none');
     el.mouth.setAttribute('display', open ? 'inline' : 'none');
     for (const [g, clip] of [[el.jawClip, 'url(#cJawArea)'], [el.upperClip, 'url(#cAboveMouth)']]) {
       if (open) g.setAttribute('clip-path', clip); else g.removeAttribute('clip-path');
     }
-    return c <= 0 && e <= 0 && L <= 0 && bl <= 0 && !open;
+    // com o pôr do sol o fundo muda a cada quadro, então nenhum quadro se repete
+    return !SUNSET && c <= 0 && e <= 0 && L <= 0 && bl <= 0 && !open;
   };
 
   window.renderFrame(0);
