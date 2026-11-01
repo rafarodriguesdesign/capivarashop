@@ -2,7 +2,7 @@
 // Uso:
 //   node render.js <anim.html> <pasta-saida> [fps=30] [escala=2] [tempos]
 //   tempos (opcional): lista separada por vírgula, ex. "0,0.5,1.2" -> renderiza só esses instantes
-// Sem "tempos", renderiza um loop completo (window.LOOP segundos) em <fps> quadros por segundo.
+// Sem "tempos", renderiza a animação inteira (window.LOOP segundos) em <fps> quadros por segundo.
 const { chromium } = require('playwright');
 const path = require('path');
 const fs = require('fs');
@@ -35,13 +35,22 @@ const fs = require('fs');
     jobs = [...Array(n).keys()].map((i) => ({ t: i / fps, name: `f_${String(i).padStart(4, '0')}` }));
   }
 
+  // Quadros na pose de repouso (o logo parado) usam sempre a mesma imagem:
+  // assim o começo e o fim ficam idênticos e o loop não tem emenda.
+  let restPng = null;
   for (const { t, name } of jobs) {
-    await page.evaluate((tt) => window.renderFrame(tt), t);
+    const rest = await page.evaluate((tt) => window.renderFrame(tt), t);
+    const file = path.join(outDir, `${name}.png`);
+    if (rest && restPng) {
+      fs.copyFileSync(restPng, file);
+      continue;
+    }
     await page.screenshot({
-      path: path.join(outDir, `${name}.png`),
+      path: file,
       clip: { x: 0, y: 0, width: 1080, height: 1080 },
       animations: 'disabled',
     });
+    if (rest) restPng = file;
   }
   await browser.close();
   console.log(`ok: ${jobs.length} quadro(s) em ${outDir}`);
